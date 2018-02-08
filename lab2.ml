@@ -44,9 +44,11 @@ To think about before you start coding:
 Now implement the two functions curry and uncurry.
 ......................................................................*)
 
-let curry = fun _ -> failwith "curry not implemented" ;;
+let curry fun('a' * 'b')-> 'c: 'a->'b->'c =
+  fun a -> fun b -> fun(a,b);;
      
-let uncurry = fun _ -> failwith "uncurry not implemented" ;;
+let uncurry fun('a->'b->'c'):('a*'b) ->'c=
+  fun (a,b) -> funk a b ;;
 
 (*......................................................................
 Exercise 2: OCaml's built in binary operators, like ( + ) and ( * ) are
@@ -61,11 +63,12 @@ Using your uncurry function, define uncurried plus and times
 functions.
 ......................................................................*)
 
-let plus =
-  fun _ -> failwith "plus not implemented"
+let plus (x: int)(y:int):((int*int)->int) =
+  fun (x,y) -> x + y;;
      
-let times =
-  fun _ -> failwith "times not implemented" ;;
+let times (x: int)(y:int):(int*int)->int =
+  fun (x,y) -> x * y;;
+
   
 (*......................................................................
 Exercise 3: Recall the prods function from Lab 1:
@@ -113,8 +116,15 @@ Reimplement max_list, but this time, it should return an int option
 instead of an int.
 ......................................................................*)
 
-let max_list (lst : int list) : int option =
-  failwith "max_list not implemented" ;;
+let rec max_list (lst : int list) : int option =
+  match lst with
+  |[]-> None
+  |[head] -> Some(head)
+  |head :: tail -> let opt = max_list tail in
+                    match opt with
+                    |None -> Some(head)
+                    |Some a -> Some (max a head)
+;;
   
 (*......................................................................
 Exercise 5: Write a function to return the smaller of two int options,
@@ -124,7 +134,11 @@ useful.
 ......................................................................*)
 
 let min_option (x : int option) (y : int option) : int option =
-  failwith "min_option not implemented" ;;
+  match (x, y) with
+  |None, None -> None
+  |x,None-> x
+  |None,y-> y
+  |x,y -> 
      
 (*......................................................................
 Exercise 6: Write a function to return the larger of two int options, or
